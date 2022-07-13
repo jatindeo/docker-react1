@@ -1,6 +1,16 @@
 sudo: required
+language: ruby
+install:
+  - gem uninstall bundler
+  - gem install bundler --version '1.7.4'
+
 services:
   - docker
 
 before_install:
   - docker build -t jatindeo/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true jatindeo/docker-react npm run test
+  -"rake"
+
