@@ -1,8 +1,8 @@
 sudo: required
-language: ruby
-install:
-  - gem uninstall bundler
-  - gem install bundler --version '1.7.4'
+language: generic
+# install:
+#   - gem uninstall bundler
+#   - gem install bundler --version '1.7.4'
 
 services:
   - docker
@@ -12,5 +12,15 @@ before_install:
 
 script:
   - docker run -e CI=true jatindeo/docker-react npm run test
-  -"rake"
-
+#  -"rake"
+deploy:
+  provider: elasticbeanstalk
+  region: us-west-2
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-us-west-2-575765699536"
+  bucket_path: "docker-react"
+  on:
+    branch: main
+    access_key_id: "$AWS_ACCESS_KEY"
+    secret_access_key: "$AWS_SECRET_KEY"
